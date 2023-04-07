@@ -12,6 +12,10 @@
 1. 运行SimpleServer,控制台会显示端口号，说明服务启动成功
 2. 运行SimpleClient,连接本地的127.0.0.1的ip，刚才控制台展示的端口
 （如果是一个人测试，可以使用idea开启允许多实例运行SimpleClient）
+<img width="600" alt="image" src="https://user-images.githubusercontent.com/19192068/230633318-647c8a63-8e47-4d61-8c24-ea994ddd6792.png">
+<img width="600" alt="image" src="https://user-images.githubusercontent.com/19192068/230633554-e99f4813-1344-4562-b182-73ecb322fa4b.png">
+<img width="1200" alt="image" src="https://user-images.githubusercontent.com/19192068/230633700-f4158537-03ff-4b22-9fd7-09ad317539cc.png">
+
 
 
 ### 添加内容
