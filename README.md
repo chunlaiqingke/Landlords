@@ -7,7 +7,7 @@
 
 ## 使用方法简单介绍
 环境要求：
-* jdk8+(推荐jdk8,自带javafx), jdk11及以上去除了javafx，需要单独安装
+* jdk8+(新手推荐jdk8,自带javafx), jdk11及以上去除了javafx，需要单独安装
 * maven
 1. 运行SimpleServer,控制台会显示端口号，说明服务启动成功
 2. 运行SimpleClient,连接本地的127.0.0.1的ip，刚才控制台展示的端口
