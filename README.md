@@ -1,4 +1,5 @@
 # Landlords
+[](https://img.shields.io/badge/java-1.8%2B-blue)
 基于java实现的斗地主小游戏，netty + javafx
 
 基于: [javafx-ratel-client](https://github.com/marmot-z/javafx-ratel-client)
