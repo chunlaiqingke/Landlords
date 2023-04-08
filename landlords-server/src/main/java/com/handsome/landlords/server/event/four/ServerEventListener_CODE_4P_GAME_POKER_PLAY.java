@@ -181,10 +181,10 @@ public class ServerEventListener_CODE_4P_GAME_POKER_PLAY implements ServerEventL
 			room.initScoreRate();
 			for (ClientSide client : room.getClientSideList()) {
 				client.setStatus(ClientStatus.NO_READY);
-				ChannelUtils.pushToClient(client.getChannel(), ClientEventCode.CODE_GAME_OVER, result);
+				ChannelUtils.pushToClient(client.getChannel(), ClientEventCode.CODE_4P_GAME_OVER, result);
 			}
 		}else{
-			ServerEventListener.get(ServerEventCode.CODE_CLIENT_EXIT).call(winner, "");
+			ServerEventListener.get(ServerEventCode.CODE_4P_CLIENT_EXIT).call(winner, "");
 		}
 		notifyWatcherGameOver(room, result);
 	}

@@ -12,7 +12,7 @@
 
             <Pane fx:id="pvpModalPane" layoutX="20.0" layoutY="50">
                 <Label styleClass="pvpModalLabel"/>
-                <Button layoutX="41" styleClass="modalButton">玩家对战</Button>
+                <Button layoutX="41" styleClass="modalButton">三人对战</Button>
             </Pane>
 
             <Pane fx:id="pvp4pModalPane" layoutX="20.0" layoutY="100">

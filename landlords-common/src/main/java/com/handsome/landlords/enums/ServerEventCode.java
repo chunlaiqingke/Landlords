@@ -6,6 +6,8 @@ public enum ServerEventCode implements Serializable {
 
 	CODE_CLIENT_EXIT("玩家退出"),
 
+	CODE_4P_CLIENT_EXIT("4人房玩家退出"),
+
 	CODE_CLIENT_OFFLINE("玩家离线"),
 
 	CODE_CLIENT_INFO_SET("设置客户端信息"),

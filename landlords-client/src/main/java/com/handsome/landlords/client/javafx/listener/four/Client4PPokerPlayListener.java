@@ -21,6 +21,9 @@ public class Client4PPokerPlayListener extends AbstractClientListener {
         User user = BeanUtil.getBean("user");
         RoomMethod roomMethod = (RoomMethod) uiService.getMethod(Room4PController.METHOD_NAME);
 
-        Platform.runLater(() -> roomMethod.play(user.getNickname()));
+        Platform.runLater(() -> {
+            roomMethod.refreshPlayPokers(user.getPokers());
+            roomMethod.play(user.getNickname());
+        });
     }
 }

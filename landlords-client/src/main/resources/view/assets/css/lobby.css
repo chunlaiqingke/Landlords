@@ -50,6 +50,7 @@
 
 #pvpModalPane,
 #pveModalPane,
+#pvp4pModalPane,
 #simpleModalPane,
 #normalModalPane,
 #difficultModalPane {
@@ -61,6 +62,7 @@
 
 #pvpModalPane:hover,
 #pveModalPane:hover,
+#pvp4pModalPane:hover,
 #simpleModalPane:hover,
 #normalModalPane:hover,
 #difficultModalPane:hover {
@@ -75,6 +77,13 @@
 }
 
 .pvpModalLabel {
+    -fx-pref-width: 41;
+    -fx-pref-height: 41;
+    -fx-background-image: url("../image/pvp-icon.png");
+    -fx-background-repeat: no-repeat;
+}
+
+.pvp4pModalLabel {
     -fx-pref-width: 41;
     -fx-pref-height: 41;
     -fx-background-image: url("../image/pvp-icon.png");

@@ -1,4 +1,4 @@
-package com.handsome.landlords.server.event;
+package com.handsome.landlords.server.event.four;
 
 import com.handsome.landlords.channel.ChannelUtils;
 import com.handsome.landlords.entity.ClientSide;
@@ -8,8 +8,12 @@ import com.handsome.landlords.enums.ClientRole;
 import com.handsome.landlords.enums.RoomType;
 import com.handsome.landlords.helper.MapHelper;
 import com.handsome.landlords.server.ServerContains;
+import com.handsome.landlords.server.event.ServerEventListener;
 
-public class ServerEventListener_CODE_CLIENT_EXIT implements ServerEventListener {
+/**
+ * 兼容4P
+ */
+public class ServerEventListener_CODE_4P_CLIENT_EXIT implements ServerEventListener {
 
 	private static final Object locked = new Object();
 
@@ -27,7 +31,7 @@ public class ServerEventListener_CODE_CLIENT_EXIT implements ServerEventListener
 					.json();
 			for (ClientSide client : room.getClientSideList()) {
 				if (client.getRole() == ClientRole.PLAYER) {
-					ChannelUtils.pushToClient(client.getChannel(), ClientEventCode.CODE_CLIENT_EXIT, result);
+					ChannelUtils.pushToClient(client.getChannel(), ClientEventCode.CODE_4P_CLIENT_EXIT, result);
 					client.init();
 				}
 			}

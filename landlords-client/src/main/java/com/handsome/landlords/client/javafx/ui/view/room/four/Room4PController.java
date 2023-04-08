@@ -264,7 +264,7 @@ public class Room4PController extends UIObject implements Room4PMethod {
         // 2，显示每个人的角色（地主|农民）和姓名
         $("prevPlayerRole", Label.class).setText(ClientType.LANDLORD.equals(currentRoomInfo4P.getPrevPlayerRole()) ? "地主" : "农民");
         $("nextPlayerRole", Label.class).setText(ClientType.LANDLORD.equals(currentRoomInfo4P.getNextPlayerRole()) ? "地主" : "农民");
-        $("midPlayerRole", Label.class).setText(ClientType.LANDLORD.equals(currentRoomInfo4P.getNextPlayerRole()) ? "地主" : "农民");
+        $("midPlayerRole", Label.class).setText(ClientType.LANDLORD.equals(currentRoomInfo4P.getCrossPlayerRole()) ? "地主" : "农民");
         $("playerRole", Label.class).setText(ClientType.LANDLORD.equals(currentRoomInfo4P.getPlayer().getRole()) ? "地主" : "农民");
     }
 
@@ -390,17 +390,18 @@ public class Room4PController extends UIObject implements Room4PMethod {
             this.playerPokersPane = $("prevPlayerPokersPane", Pane.class);
         }
 
+        /**
+         * 修复出牌时第三行会遮挡第二行的牌的问题
+         * @param pokers
+         */
         @Override
         public void renderPokers(List<Poker> pokers) {
             final int maxPerRowPokerCount = 8;
 
             for (int i = 0, size = pokers.size(); i < size; i++) {
+                int row = i / maxPerRowPokerCount;
                 ShowPokerPane pokerPane = new ShowPokerPane(pokers.get(i));
-                if (i < maxPerRowPokerCount) {
-                    pokerPane.setLayout(i * ShowPokerPane.MARGIN_LEFT, 0);
-                } else {
-                    pokerPane.setLayout((i % maxPerRowPokerCount) * ShowPokerPane.MARGIN_LEFT, ShowPokerPane.MARGIN_TOP);
-                }
+                pokerPane.setLayout((i % maxPerRowPokerCount) * ShowPokerPane.MARGIN_LEFT, ShowPokerPane.MARGIN_TOP * row);
                 playerShowPokersPane.getChildren().add(pokerPane.getPane());
             }
         }
@@ -472,12 +473,9 @@ public class Room4PController extends UIObject implements Room4PMethod {
             final int parentPaneWidth = 400;
 
             for (int i = 0, size = pokers.size(); i < size; i++) {
+                int row = i / maxPerRowPokerCount;
                 ShowPokerPane pokerPane = new ShowPokerPane(pokers.get(i));
-                if (i < maxPerRowPokerCount) {
-                    pokerPane.setLayout(parentPaneWidth + i * ShowPokerPane.MARGIN_LEFT, 0);
-                } else {
-                    pokerPane.setLayout(parentPaneWidth + (i % maxPerRowPokerCount) * ShowPokerPane.MARGIN_LEFT, ShowPokerPane.MARGIN_TOP);
-                }
+                pokerPane.setLayout(parentPaneWidth + (i % maxPerRowPokerCount) * ShowPokerPane.MARGIN_LEFT, ShowPokerPane.MARGIN_TOP * row);
                 playerShowPokersPane.getChildren().add(pokerPane.getPane());
             }
         }
