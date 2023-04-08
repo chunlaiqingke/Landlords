@@ -1,5 +1,8 @@
 # Landlords
+环境要求：
 ![](https://img.shields.io/badge/java-1.8%2B-blue)  
+* jdk8+(新手推荐jdk8,自带javafx), jdk11及以上去除了javafx，需要单独安装
+* maven
 
 基于java实现的斗地主小游戏，netty + javafx
 
@@ -8,9 +11,7 @@
 长期没有人维护，所以我这里单独发一个项目
 
 ## 使用方法简单介绍
-环境要求：
-* jdk8+(新手推荐jdk8,自带javafx), jdk11及以上去除了javafx，需要单独安装
-* maven
+
 1. 运行SimpleServer,控制台会显示端口号，说明服务启动成功
 2. 运行SimpleClient,连接本地的127.0.0.1的ip，刚才控制台展示的端口
 （如果是一个人测试，可以使用idea开启允许多实例运行SimpleClient）
