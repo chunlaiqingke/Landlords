@@ -40,5 +40,5 @@
 
 
 #### native打包方式
-[javapackager](https://blog.csdn.net/wangmx1993328/article/details/80861363)
+[packr](https://github.com/libgdx/packr)
 
