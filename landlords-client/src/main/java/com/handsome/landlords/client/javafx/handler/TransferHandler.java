@@ -10,14 +10,11 @@ import com.handsome.landlords.entity.ClientTransferData.ClientTransferDataProtoc
 import com.handsome.landlords.enums.ClientEventCode;
 import com.handsome.landlords.enums.ServerEventCode;
 import com.handsome.landlords.print.SimplePrinter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.handsome.landlords.client.javafx.listener.ClientListener;
 import com.handsome.landlords.client.javafx.listener.ClientListenerUtils;
 
 
 public class TransferHandler extends ChannelInboundHandlerAdapter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(TransferHandler.class);
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -30,7 +27,7 @@ public class TransferHandler extends ChannelInboundHandlerAdapter {
 
             ClientEventCode code = ClientEventCode.valueOf(clientTransferData.getCode());
 
-            LOGGER.info("接受服务端信息, 编码：{},数据：{}.", code, clientTransferData.getData());
+            SimplePrinter.printNotice("接受服务端信息, 编码："+code+",数据："+clientTransferData.getData()+".");
 
             if (code != null) {
                 ClientListener listener = ClientListenerUtils.getListener(code);
@@ -38,7 +35,7 @@ public class TransferHandler extends ChannelInboundHandlerAdapter {
                 if (listener != null) {
                     listener.handle(ctx.channel(), clientTransferData.getData());
                 } else {
-                    LOGGER.warn("未知的消息编码 {}，忽略该条消息： {}", code, clientTransferData.getData());
+                    SimplePrinter.printNotice("未知的消息编码 "+code+"，忽略该条消息： "+clientTransferData.getData());
                 }
             }
         } finally {

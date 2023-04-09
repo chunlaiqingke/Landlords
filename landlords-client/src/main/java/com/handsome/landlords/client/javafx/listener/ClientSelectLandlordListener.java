@@ -4,15 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import io.netty.channel.Channel;
 import javafx.application.Platform;
 import com.handsome.landlords.enums.ClientEventCode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.handsome.landlords.client.javafx.entity.CurrentRoomInfo;
 import com.handsome.landlords.client.javafx.ui.view.room.RoomController;
 import com.handsome.landlords.client.javafx.ui.view.room.RoomMethod;
 import com.handsome.landlords.client.javafx.util.BeanUtil;
 
 public class ClientSelectLandlordListener extends AbstractClientListener {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClientSelectLandlordListener.class);
 
     public ClientSelectLandlordListener() {
         super(ClientEventCode.CODE_GAME_LANDLORD_ELECT);

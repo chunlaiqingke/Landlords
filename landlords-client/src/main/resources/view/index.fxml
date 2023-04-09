@@ -27,7 +27,7 @@
       </Pane>
 
       <Pane fx:id="remoteServerInfoPane" layoutX="310" layoutY="20">
-         <Label layoutX="68" layoutY="5" styleClass="forLabel">远程服务器信息</Label>
+         <Label layoutX="68" layoutY="5" styleClass="forLabel">远程服务器信息[非四人]</Label>
 
          <Pane fx:id="remoteServerListPane" layoutY="40">
             <ScrollBar orientation="VERTICAL" layoutX="260" max="5" min="0" value="0" prefHeight="300"></ScrollBar>

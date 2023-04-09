@@ -1,13 +1,10 @@
 package com.handsome.landlords.client.javafx.listener;
 
 import com.handsome.landlords.enums.ClientEventCode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.handsome.landlords.client.javafx.ui.UIService;
+import com.handsome.landlords.print.SimplePrinter;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.*;
 import java.util.jar.JarEntry;
@@ -17,7 +14,6 @@ import java.util.stream.Stream;
 
 
 public class ClientListenerUtils {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClientListenerUtils.class);
 
     /** code - listener 映射 */
     private static final Map<ClientEventCode, ClientListener> LISTENER_MAP = new HashMap<>(16);
@@ -42,7 +38,7 @@ public class ClientListenerUtils {
         }
     }
 
-    private static final String JAR_FILE_NAME = "javafx-ratel-client";
+    private static final String JAR_FILE_NAME = "landlords-client";
 
     static {
         List<Class<ClientListener>> listenerClassList;
@@ -55,10 +51,11 @@ public class ClientListenerUtils {
                                 .filter((file) -> file.getName().contains(JAR_FILE_NAME))
                                 .findFirst()
                                 .orElseThrow(() ->
-                                        new RuntimeException("当前 " + userDir + " 目录下找不到 " + "javafx-ratel-client" + "-{version}.jar 包"));
+                                        new RuntimeException("当前 " + userDir + " 目录下找不到 " + "landlords-client" + ".jar 包"));
 
             try {
                 listenerClassList = findListenerInJarFile(new JarFile(jarFile.getAbsoluteFile()));
+                System.out.println("size: " + listenerClassList.size());
             } catch (IOException var8) {
                 throw new RuntimeException(var8);
             }
@@ -73,9 +70,11 @@ public class ClientListenerUtils {
                 ClientListener listener = clazz.newInstance();
                 LISTENER_MAP.put(listener.getCode(), listener);
             } catch (InstantiationException var6) {
-                LOGGER.warn(clazz.getName() + " 不能被实例化");
+                SimplePrinter.printNotice(clazz.getName() + " 不能被实例化");
+                var6.printStackTrace();
             } catch (IllegalAccessException var7) {
-                LOGGER.warn(clazz.getName() + " 没有默认构造函数或默认构造函数不可访问", var7);
+                SimplePrinter.printNotice(clazz.getName() + " 没有默认构造函数或默认构造函数不可访问");
+                var7.printStackTrace();
             }
         }
 
@@ -128,25 +127,25 @@ public class ClientListenerUtils {
             try {
                 classList.add(classLoader.loadClass(classFullName));
             } catch (ClassNotFoundException e) {
-                LOGGER.warn("默认类加载器在 {} 路径下没有找到 {} 类", classpath, classFullName);
+                SimplePrinter.printNotice("默认类加载器在 " +classpath+ " 路径下没有找到 "+classFullName+" 类");
             }
         }
 
         return classList;
     }
 
-    private static final String PACKAGE_NAME = "priv/zxw/ratel/landlords/client/javafx/listener";
+    private static final String PACKAGE_NAME = "com/handsome/landlords/client/javafx/listener";
 
     private static List<Class<ClientListener>> findListenerInJarFile(JarFile jarFile) {
         List<Class<?>> classes = new ArrayList(10);
         ClassLoader defaultClassLoader = ClientListenerUtils.class.getClassLoader();
         Enumeration enumeration = jarFile.entries();
 
+        System.out.println("start");
         while(enumeration.hasMoreElements()) {
+            System.out.println("while inner");
             JarEntry jarEntry = (JarEntry)enumeration.nextElement();
             String entryName = jarEntry.getName();
-
-            LOGGER.info(entryName);
 
             boolean isMaybeListenerClass = entryName.contains(PACKAGE_NAME) && isNormalClass(entryName);
             if (isMaybeListenerClass) {
@@ -155,7 +154,7 @@ public class ClientListenerUtils {
                 try {
                     classes.add(defaultClassLoader.loadClass(classFullName));
                 } catch (ClassNotFoundException var9) {
-                    LOGGER.warn("默认类加载器在 {} jar包中下没有找到 {} 类", jarFile.getName(), classFullName);
+                    SimplePrinter.printNotice("默认类加载器在 "+jarFile.getName()+" jar包中下没有找到 "+classFullName+" 类");
                 }
             }
         }

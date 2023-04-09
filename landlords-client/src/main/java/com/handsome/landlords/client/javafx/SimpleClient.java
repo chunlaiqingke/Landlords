@@ -2,12 +2,11 @@ package com.handsome.landlords.client.javafx;
 
 import com.alibaba.fastjson.JSONArray;
 import com.handsome.landlords.client.javafx.ui.view.room.four.Room4PController;
+import com.handsome.landlords.print.SimplePrinter;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import com.handsome.landlords.utils.StreamUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.handsome.landlords.client.javafx.event.IndexEvent;
 import com.handsome.landlords.client.javafx.event.LobbyEvent;
 import com.handsome.landlords.client.javafx.event.LoginEvent;
@@ -26,8 +25,6 @@ import java.util.List;
 
 
 public class SimpleClient extends Application {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleClient.class);
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -49,7 +46,7 @@ public class SimpleClient extends Application {
             List<String> remoteServerAddressList = fetchRemoteServerAddresses();
             Platform.runLater(() -> indexMethod.generateRemoteServerAddressOptions(remoteServerAddressList));
         } catch (IOException e) {
-            LOGGER.error("获取远程服务器列表失败", e);
+            SimplePrinter.printNotice("获取远程服务器列表失败" + e.getMessage());
             Platform.runLater(() -> indexMethod.setFetchRemoteServerAddressErrorTips());
         }
     }

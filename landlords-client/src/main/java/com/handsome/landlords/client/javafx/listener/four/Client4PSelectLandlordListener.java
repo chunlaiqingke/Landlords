@@ -11,11 +11,8 @@ import com.handsome.landlords.client.javafx.util.BeanUtil;
 import com.handsome.landlords.enums.ClientEventCode;
 import io.netty.channel.Channel;
 import javafx.application.Platform;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Client4PSelectLandlordListener extends AbstractClientListener {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Client4PSelectLandlordListener.class);
 
     public Client4PSelectLandlordListener() {
         super(ClientEventCode.CODE_4P_GAME_LANDLORD_ELECT);

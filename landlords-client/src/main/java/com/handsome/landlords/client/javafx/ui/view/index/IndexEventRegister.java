@@ -1,17 +1,15 @@
 package com.handsome.landlords.client.javafx.ui.view.index;
 
 
+import com.handsome.landlords.print.SimplePrinter;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.handsome.landlords.client.javafx.ui.event.IIndexEvent;
 import com.handsome.landlords.client.javafx.ui.view.EventRegister;
 import com.handsome.landlords.client.javafx.ui.view.UIObject;
 
 public class IndexEventRegister implements EventRegister {
-    private static final Logger LOGGER = LoggerFactory.getLogger(IndexEventRegister.class);
 
     private UIObject uiObject;
     private IIndexEvent indexEvent;
@@ -36,7 +34,7 @@ public class IndexEventRegister implements EventRegister {
             try {
                 indexEvent.connect(host, port);
             } catch (Exception ex) {
-                LOGGER.error(String.format("连接netty服务端(%s:%d)失败", host, port), ex);
+                SimplePrinter.printNotice(String.format("连接netty服务端(%s:%d)失败", host, port));
                 Platform.runLater(() -> ((IndexMethod) uiObject).setConnectServerErrorTips());
             }
         });

@@ -69,6 +69,36 @@
                     <fork>true</fork>
                 </configuration>
             </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-toolchains-plugin</artifactId>-->
+<!--                <version>1.1</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>toolchain</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <configuration>-->
+<!--                    <toolchains>-->
+<!--                        <jdk>-->
+<!--                            <version>1.8</version>-->
+<!--                            <vendor>sun</vendor>-->
+<!--                        </jdk>-->
+<!--                    </toolchains>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+
+            <!-- java8使用的插件，高版本使用openjfx的插件-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-jlink-plugin</artifactId>-->
+<!--                <version>3.1.0</version>-->
+<!--                <configuration>-->
+<!--                    <launcher>com.handsome.landlords.client.javafx.SimpleClient</launcher>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 </project>

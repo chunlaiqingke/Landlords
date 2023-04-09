@@ -7,12 +7,8 @@ import com.handsome.landlords.client.javafx.listener.ClientListenerUtils;
 import com.handsome.landlords.client.javafx.util.BeanUtil;
 import com.handsome.landlords.enums.ClientEventCode;
 import io.netty.channel.Channel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Client4PPokerPlayRedirectListener extends AbstractClientListener {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Client4PPokerPlayRedirectListener.class);
-
     public Client4PPokerPlayRedirectListener() {
         super(ClientEventCode.CODE_4P_GAME_POKER_PLAY_REDIRECT);
     }

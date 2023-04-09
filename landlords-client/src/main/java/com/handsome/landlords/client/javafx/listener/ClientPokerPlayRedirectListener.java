@@ -3,13 +3,10 @@ package com.handsome.landlords.client.javafx.listener;
 import com.alibaba.fastjson.JSONObject;
 import io.netty.channel.Channel;
 import com.handsome.landlords.enums.ClientEventCode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.handsome.landlords.client.javafx.NettyClient;
 import com.handsome.landlords.client.javafx.util.BeanUtil;
 
 public class ClientPokerPlayRedirectListener extends AbstractClientListener {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClientPokerPlayRedirectListener.class);
 
     public ClientPokerPlayRedirectListener() {
         super(ClientEventCode.CODE_GAME_POKER_PLAY_REDIRECT);
