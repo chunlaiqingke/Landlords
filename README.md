@@ -36,3 +36,9 @@
 * 下游玩家出的牌有遮挡，看不清第二行
 * 其他玩家大于16张牌是，会遮挡
 * 修复出牌不符合牌型或者过小时，出现按钮点不动的情况
+
+
+
+#### native打包方式
+[javapackager](https://blog.csdn.net/wangmx1993328/article/details/80861363)
+
