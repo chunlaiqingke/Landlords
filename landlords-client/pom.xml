@@ -12,12 +12,24 @@
     <artifactId>landlords-client</artifactId>
 
     <properties>
-        <java.version.source>1.8</java.version.source>
-        <java.version.target>1.8</java.version.target>
+        <java.version.source>17</java.version.source>
+        <java.version.target>17</java.version.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
+        <!-- 高版本jdk需要加载依赖 -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>17.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>17.0.1</version>
+        </dependency>
+
         <dependency>
             <groupId>com.handsome</groupId>
             <artifactId>landlords-common</artifactId>
@@ -64,8 +76,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>17</source>
+                    <target>17</target>
                     <fork>true</fork>
                 </configuration>
             </plugin>
