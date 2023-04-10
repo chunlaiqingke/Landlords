@@ -1,7 +1,7 @@
 # Landlords
 环境要求：
 ![](https://img.shields.io/badge/java-1.8%2B-blue)  
-* jdk8+(新手推荐jdk8,自带javafx), jdk11及以上去除了javafx，需要单独安装
+* jdk8+(新手推荐jdk8,自带javafx), jdk11及以上去除了javafx，需要单独安装,高版本jdk可见下面参考链接，jdk17的代码已升级
 * maven
 
 基于java实现的斗地主小游戏，netty + javafx
