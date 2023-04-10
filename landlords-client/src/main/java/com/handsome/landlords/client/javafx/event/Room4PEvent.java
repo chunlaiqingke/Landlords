@@ -57,7 +57,7 @@ public class Room4PEvent implements IRoomEvent,IRoom4PEvent {
     public void exit() {
         Channel channel = BeanUtil.getBean("channel");
 
-        ChannelUtils.pushToServer(channel, ServerEventCode.CODE_CLIENT_EXIT, null);
+        ChannelUtils.pushToServer(channel, ServerEventCode.CODE_4P_CLIENT_EXIT, null);
     }
 
     @Override

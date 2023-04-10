@@ -11,6 +11,7 @@ import com.handsome.landlords.client.javafx.ui.view.room.SurplusPokerPane;
 import com.handsome.landlords.client.javafx.ui.view.room.operator.PlayerPaneOperator;
 import com.handsome.landlords.client.javafx.ui.view.util.CountDownTask;
 import com.handsome.landlords.client.javafx.util.BeanUtil;
+import com.handsome.landlords.helper.BombHelper;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import com.handsome.landlords.entity.Poker;
@@ -188,8 +189,10 @@ public class Room4PController extends UIObject implements Room4PMethod {
         // 第一张牌的x轴偏移量
         int firstPokerPaneOffsetX = ((pokersPaneWidth - pokerPaneWidth) - PokerPane4P.MARGIN_LEFT * (size -1)) / 2;
 
+        List<Integer> where = BombHelper.where(pokers);
         for (int i = 0; i < size; i++) {
-            pokersPane.getChildren().add(new PokerPane4P(i, firstPokerPaneOffsetX, pokers.get(i)).getPane());
+            boolean isBomb = where.contains(i);
+            pokersPane.getChildren().add(new PokerPane4P(i, firstPokerPaneOffsetX, pokers.get(i), isBomb).getPane());
         }
     }
 

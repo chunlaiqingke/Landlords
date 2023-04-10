@@ -24,15 +24,19 @@ public class PokerPane4P {
     private Pane pane;
 
     public PokerPane4P(int index, int offsetX, Poker poker) {
+        this(index, offsetX, poker, false);
+    }
+
+    public PokerPane4P(int index, int offsetX, Poker poker, boolean isBomb) {
         this.poker = poker;
         this.index = index;
         this.offsetX = offsetX;
 
         if (PokerLevel.LEVEL_SMALL_KING.equals(poker.getLevel()) ||
                 PokerLevel.LEVEL_BIG_KING.equals(poker.getLevel())) {
-            createJokerPokerPane();
+            createJokerPokerPane(isBomb);
         } else {
-            createNormalPokerPane();
+            createNormalPokerPane(isBomb);
         }
 
         pane.setOnMouseClicked(e -> {
@@ -53,7 +57,7 @@ public class PokerPane4P {
         });
     }
 
-    private void createNormalPokerPane() {
+    private void createNormalPokerPane(boolean isBomb) {
         pane = new Pane();
         pane.getStyleClass().add("horizontal-poker");
         pane.setLayoutX(index * MARGIN_LEFT + offsetX);
@@ -70,6 +74,14 @@ public class PokerPane4P {
         typeSmall.setLayoutX(8);
         typeSmall.setLayoutY(60);
         typeSmall.setText(poker.getType().getName());
+
+        Text bomb = new Text();
+        if(isBomb) {
+            bomb.setStyle("-fx-font-size: 16");
+            bomb.setLayoutX(8);
+            bomb.setLayoutY(110);
+            bomb.setText("炸");
+        }
 
         Text typeBig = new Text();
         typeBig.getStyleClass().add("type-big");
@@ -91,9 +103,12 @@ public class PokerPane4P {
         children.add(level);
         children.add(typeSmall);
         children.add(typeBig);
+        if(isBomb) {
+            children.add(bomb);
+        }
     }
 
-    private void createJokerPokerPane() {
+    private void createJokerPokerPane(boolean isBomb) {
         pane = new Pane();
         pane.getStyleClass().add("horizontal-poker");
         pane.setLayoutX(index * MARGIN_LEFT + offsetX);
@@ -129,6 +144,14 @@ public class PokerPane4P {
         text5.setLayoutY(82);
         text5.setText("R");
 
+        Text bomb = new Text();
+        if(isBomb) {
+            bomb.setStyle("-fx-font-size: 16");
+            bomb.setLayoutX(8);
+            bomb.setLayoutY(110);
+            bomb.setText("炸");
+        }
+
         Text logo = new Text();
         logo.setLayoutX(40);
         logo.setLayoutY(100);
@@ -156,6 +179,9 @@ public class PokerPane4P {
         children.add(text3);
         children.add(text4);
         children.add(text5);
+        if(isBomb) {
+            children.add(bomb);
+        }
     }
 
     public Pane getPane() {
