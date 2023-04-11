@@ -2,6 +2,7 @@ package com.handsome.landlords.client.javafx.ui.view.room;
 
 
 import com.handsome.landlords.client.javafx.ui.view.room.operator.PlayerPaneOperator;
+import com.handsome.landlords.entity.PokerSell4P;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -243,6 +244,16 @@ public class RoomController extends UIObject implements RoomMethod {
     public void hidePokerPlayButtons() {
         $("submitButton", Button.class).setVisible(false);
         $("passButton", Button.class).setVisible(false);
+    }
+
+    @Override
+    public void checkPokers(List<Poker> pokers, PokerSell4P hintPokerSell) {
+        //todo
+    }
+
+    @Override
+    public void clearCheckedPokers(List<Poker> pokers) {
+        //todo
     }
 
     @Override

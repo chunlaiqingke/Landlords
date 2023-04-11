@@ -110,6 +110,10 @@ public class CurrentRoomInfo {
         checkedPokers.remove(poker);
     }
 
+    public void clearCheckedPokers(){
+        checkedPokers.clear();
+    }
+
     public List<Poker> pollCheckedPokers() {
         List<Poker> pokers = new ArrayList<>(checkedPokers);
         checkedPokers.clear();

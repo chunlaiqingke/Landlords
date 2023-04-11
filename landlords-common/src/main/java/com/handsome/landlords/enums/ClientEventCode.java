@@ -97,7 +97,9 @@ public enum ClientEventCode implements Serializable {
 
 	CODE_GAME_WATCH("观战"),
 
-	CODE_GAME_WATCH_SUCCESSFUL("观战成功"),;
+	CODE_GAME_WATCH_SUCCESSFUL("观战成功"),
+
+	CODE_4P_HINT_POKER_PLAY("提示出牌");
 
 	private String msg;
 

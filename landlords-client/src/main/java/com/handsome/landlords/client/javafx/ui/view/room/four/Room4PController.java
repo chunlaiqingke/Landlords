@@ -1,25 +1,26 @@
 package com.handsome.landlords.client.javafx.ui.view.room.four;
 
-import com.handsome.landlords.client.javafx.entity.CurrentRoomInfo;
 import com.handsome.landlords.client.javafx.entity.CurrentRoomInfo4P;
 import com.handsome.landlords.client.javafx.entity.User;
 import com.handsome.landlords.client.javafx.event.Room4PEvent;
-import com.handsome.landlords.client.javafx.ui.view.room.PokerPane;
-import com.handsome.landlords.client.javafx.ui.view.room.RoomController;
 import com.handsome.landlords.client.javafx.ui.view.room.ShowPokerPane;
-import com.handsome.landlords.client.javafx.ui.view.room.SurplusPokerPane;
 import com.handsome.landlords.client.javafx.ui.view.room.operator.PlayerPaneOperator;
 import com.handsome.landlords.client.javafx.ui.view.util.CountDownTask;
 import com.handsome.landlords.client.javafx.util.BeanUtil;
-import com.handsome.landlords.helper.BombHelper;
+import com.handsome.landlords.entity.PokerSell4P;
+import com.handsome.landlords.helper.PokerHelper4P;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import com.handsome.landlords.entity.Poker;
 import com.handsome.landlords.enums.ClientType;
 import com.handsome.landlords.client.javafx.ui.view.UIObject;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
@@ -189,7 +190,7 @@ public class Room4PController extends UIObject implements Room4PMethod {
         // 第一张牌的x轴偏移量
         int firstPokerPaneOffsetX = ((pokersPaneWidth - pokerPaneWidth) - PokerPane4P.MARGIN_LEFT * (size -1)) / 2;
 
-        List<Integer> where = BombHelper.where(pokers);
+        List<Integer> where = PokerHelper4P.whereBomb(pokers);
         for (int i = 0; i < size; i++) {
             boolean isBomb = where.contains(i);
             pokersPane.getChildren().add(new PokerPane4P(i, firstPokerPaneOffsetX, pokers.get(i), isBomb).getPane());
@@ -269,18 +270,61 @@ public class Room4PController extends UIObject implements Room4PMethod {
         $("nextPlayerRole", Label.class).setText(ClientType.LANDLORD.equals(currentRoomInfo4P.getNextPlayerRole()) ? "地主" : "农民");
         $("midPlayerRole", Label.class).setText(ClientType.LANDLORD.equals(currentRoomInfo4P.getCrossPlayerRole()) ? "地主" : "农民");
         $("playerRole", Label.class).setText(ClientType.LANDLORD.equals(currentRoomInfo4P.getPlayer().getRole()) ? "地主" : "农民");
+
+        //让地主标签高亮
+        if(ClientType.LANDLORD.equals(currentRoomInfo4P.getPrevPlayerRole())) {
+            $("prevPlayerRole", Label.class).setStyle("-fx-background-color: #FF6347;");
+        }
+        if(ClientType.LANDLORD.equals(currentRoomInfo4P.getNextPlayerRole())) {
+            $("nextPlayerRole", Label.class).setStyle("-fx-background-color: #FF6347;");
+        }
+        if(ClientType.LANDLORD.equals(currentRoomInfo4P.getCrossPlayerRole())) {
+            $("midPlayerRole", Label.class).setStyle("-fx-background-color: #FF6347;");
+        }
+        if(ClientType.LANDLORD.equals(currentRoomInfo4P.getPlayer().getRole())) {
+            $("playerRole", Label.class).setStyle("-fx-background-color: #FF6347;");
+        }
     }
 
     @Override
     public void showPokerPlayButtons() {
         $("submitButton", Button.class).setVisible(true);
         $("passButton", Button.class).setVisible(true);
+        $("hintButton", Button.class).setVisible(true);
     }
 
     @Override
     public void hidePokerPlayButtons() {
         $("submitButton", Button.class).setVisible(false);
         $("passButton", Button.class).setVisible(false);
+        $("hintButton", Button.class).setVisible(false);
+    }
+
+    @Override
+    public void checkPokers(List<Poker> pokers, PokerSell4P hintPokerSell) {
+        //先清除之前选中的牌
+        clearCheckedPokers(pokers);
+        Pane pokersPane = $("pokersPane", Pane.class);
+        List<Integer> positions = hintPokerSell.getPositions();
+        ObservableList<Node> children = pokersPane.getChildren();
+        for(int p : positions) {
+            //手动触发点击事件
+            children.get(p).fireEvent(new MouseEvent(
+                    MouseEvent.MOUSE_CLICKED,
+                    1, 1, 1, 1,
+                    MouseButton.PRIMARY,
+                    1,
+                    false, false, false, false,
+                    false, false, false,
+                    false, false, false, null));
+        }
+    }
+
+    public void clearCheckedPokers(List<Poker> pokers){
+        CurrentRoomInfo4P currentRoomInfo4P = BeanUtil.getBean("currentRoomInfo4P");
+        currentRoomInfo4P.clearCheckedPokers();
+
+        refreshPlayPokers(pokers);
     }
 
     private PlayerPaneOperator getPlayerPaneOperatorByPlayerName(String playerName) {

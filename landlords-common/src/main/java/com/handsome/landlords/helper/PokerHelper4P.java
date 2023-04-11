@@ -1,5 +1,6 @@
 package com.handsome.landlords.helper;
 
+import com.google.common.collect.Sets;
 import com.handsome.landlords.entity.Poker;
 import com.handsome.landlords.entity.PokerSell4P;
 import com.handsome.landlords.enums.PokerLevel;
@@ -245,5 +246,281 @@ public class PokerHelper4P {
 
     public static void sortPoker(List<Poker> pokers) {
         pokers.sort(pokerComparator);
+    }
+
+    /**
+     * 返回bomb牌的索引
+     * @param pokers
+     * @return
+     */
+    public static List<Integer> whereBomb(List<Poker> pokers){
+        Map<Integer, List<Integer>> count = new HashMap<>();
+        List<Integer> indexRes = new ArrayList<>();
+        for(int i = 0; i < pokers.size(); i++) {
+            Poker poker = pokers.get(i);
+            if(poker.getLevel() == PokerLevel.LEVEL_SMALL_KING || poker.getLevel() == PokerLevel.LEVEL_BIG_KING) {
+                int kingKey = PokerLevel.LEVEL_SMALL_KING.getLevel() + PokerLevel.LEVEL_BIG_KING.getLevel();
+                List<Integer> kingCount = count.getOrDefault(kingKey, new ArrayList<>());
+                kingCount.add(i);
+                count.put(kingKey, kingCount);
+            } else {
+                List<Integer> indexList = count.getOrDefault(poker.getLevel().getLevel(), new ArrayList<>());
+                indexList.add(i);
+                count.put(poker.getLevel().getLevel(), indexList);
+            }
+        }
+        for(Integer k : count.keySet()) {
+            List<Integer> indexList = count.get(k);
+            if(indexList.size() >= 4){
+                indexRes.addAll(indexList);
+            }
+        }
+        return indexRes;
+    }
+
+    /**
+     * 找到指定类型的牌
+     * @param pokers
+     * @param pokerSell4P
+     * @return 返回满足的类型
+     */
+    public static List<PokerSell4P> findPokersByPokerType(List<Poker> pokers, PokerSell4P pokerSell4P) {
+
+        Map<Integer, List<Integer>> pokerIndex = new HashMap<>();
+        for(int i = 0; i < pokers.size(); i++){
+            Poker p = pokers.get(i);
+            List<Integer> indexList = pokerIndex.getOrDefault(p.getLevel().getLevel(), new ArrayList<>());
+            indexList.add(i);
+            pokerIndex.put(p.getLevel().getLevel(), indexList);
+        }
+
+        //获取第一个不同牌型的位置
+        List<Integer> diffIndex = new ArrayList<>();
+        diffIndex.add(0);
+        for(Integer k : pokerIndex.keySet()) {
+            List<Integer> indexList = pokerIndex.get(k);
+            diffIndex.add(indexList.get(0));
+        }
+
+        List<PokerSell4P> res = new ArrayList<>();
+        switch (pokerSell4P.getSellType4P()) {
+            case SINGLE :
+                for(int i = 0; i < pokers.size(); i++) {
+                    Poker poker = pokers.get(i);
+                    PokerSell4P futureType = PokerHelper4P.checkPokerType(new ArrayList<>(Collections.singletonList(poker)));
+                    if(pokerSell4P.getSellType4P() == futureType.getSellType4P() && futureType.getScore() > pokerSell4P.getScore()) {
+                        futureType.setPositions(new ArrayList<>(List.of(i)));
+                        res.add(futureType);
+                    }
+                }
+                break;
+            case DOUBLE:
+                for(int i = 0; i < diffIndex.size(); i++) {
+                    Poker poker = pokers.get(diffIndex.get(i));
+                    Integer count = pokerIndex.get(poker.getLevel().getLevel()).size();
+                    if(count < 2) {
+                        continue;
+                    }
+                    Poker poker1 = pokers.get(i);
+                    Poker poker2 = pokers.get(i + 1);
+                    PokerSell4P futureType = PokerHelper4P.checkPokerType(new ArrayList<>(Arrays.asList(poker1, poker2)));
+                    if(pokerSell4P.getSellType4P() == futureType.getSellType4P() && futureType.getScore() > pokerSell4P.getScore()) {
+                        futureType.setPositions(new ArrayList<>(Arrays.asList(i, i+1)));
+                        res.add(futureType);
+                    }
+                }
+                break;
+            case THREE:
+                for(int i = 0; i < diffIndex.size(); i++) {
+                    Poker poker = pokers.get(diffIndex.get(i));
+                    Integer count = pokerIndex.get(poker.getLevel().getLevel()).size();
+                    if(count < 3) {
+                        continue;
+                    }
+                    Poker poker1 = pokers.get(i);
+                    Poker poker2 = pokers.get(i + 1);
+                    Poker poker3 = pokers.get(i + 2);
+                    PokerSell4P futureType = PokerHelper4P.checkPokerType(new ArrayList<>(Arrays.asList(poker1, poker2, poker3)));
+                    if(pokerSell4P.getSellType4P() == futureType.getSellType4P() && futureType.getScore() > pokerSell4P.getScore()) {
+                        futureType.setPositions(new ArrayList<>(Arrays.asList(i, i+1, i+2)));
+                        res.add(futureType);
+                    }
+                }
+                break;
+            case THREE_ZONES_DOUBLE:
+                boolean hasThree = pokerIndex.values().stream().anyMatch(p -> p.size() >= 3);
+                boolean hasTwo = pokerIndex.values().stream().anyMatch(p -> p.size() >= 2);
+                if(hasThree && hasTwo) {
+                    List<Integer> three = pokerIndex.entrySet().stream().filter(e -> e.getValue().size() >= 3).map(Map.Entry::getKey).toList();
+                    List<Integer> two = pokerIndex.entrySet().stream().filter(e -> e.getValue().size() >= 2).map(Map.Entry::getKey).toList();
+                    for(int th : three) {
+                        for(int t : two) {
+                            List<Integer> threeIndexList = pokerIndex.get(th);
+                            List<Poker> futurePokers = threeIndexList.stream().map(pokers::get).limit(3).collect(Collectors.toList());
+                            List<Integer> twoIndexList = pokerIndex.get(t);
+                            futurePokers.addAll(twoIndexList.stream().map(pokers::get).limit(2).toList());
+                            PokerSell4P futureSell = PokerHelper4P.checkPokerType(futurePokers);
+                            if(pokerSell4P.getSellType4P() == futureSell.getSellType4P() && futureSell.getScore() > pokerSell4P.getScore()) {
+                                futureSell.addPositions(threeIndexList.stream().limit(3).collect(Collectors.toList()));
+                                futureSell.addPositions(twoIndexList.stream().limit(2).collect(Collectors.toList()));
+                                res.add(futureSell);
+                            }
+                        }
+                    }
+                }
+                break;
+            case DOUBLE_STRAIGHT:
+                //几连对
+                int straightCount = pokerSell4P.getStraightCount();
+                for(int i = 0; i < diffIndex.size(); i++) {
+                    Integer index = diffIndex.get(i);
+                    Poker poker = pokers.get(index);
+                    int level = poker.getLevel().getLevel();
+                    if(level < 3 || level > 14 - straightCount + 1) { //2和大小王不够成连对
+                        continue;
+                    }
+                    List<Poker> futurePokers = new ArrayList<>();
+                    List<Integer> positions = new ArrayList<>();
+                    for(int startLevel = level; startLevel < level + straightCount; startLevel ++){
+                        List<Integer> indexList = pokerIndex.get(startLevel);
+                        if(indexList.size() < 2) {
+                            break;
+                        }
+                        Poker poker1 = pokers.get(indexList.get(0));
+                        Poker poker2 = pokers.get(indexList.get(1));
+                        futurePokers.add(poker1);
+                        futurePokers.add(poker2);
+                        positions.addAll(Arrays.asList(indexList.get(0), indexList.get(1)));
+                    }
+                    if(futurePokers.size() < straightCount * 2) {
+                        continue;
+                    }
+                    PokerSell4P futureSell = PokerHelper4P.checkPokerType(futurePokers);
+                    if(pokerSell4P.getSellType4P() == futureSell.getSellType4P() && futureSell.getScore() > pokerSell4P.getScore()) {
+                        futureSell.setPositions(positions);
+                        res.add(futureSell);
+                    }
+                }
+                break;
+            case THREE_STRAIGHT:
+                //几连飞机
+                int sc = pokerSell4P.getStraightCount();
+                for(int i = 0; i < diffIndex.size(); i++) {
+                    Integer index = diffIndex.get(i);
+                    Poker poker = pokers.get(index);
+                    int level = poker.getLevel().getLevel();
+                    if(level < 3 || level > 14 - sc + 1) { //2和大小王不够成连对
+                        continue;
+                    }
+                    List<Poker> futurePokers = new ArrayList<>();
+                    List<Integer> positions = new ArrayList<>();
+                    for(int startLevel = level; startLevel < level + sc; startLevel ++){
+                        List<Integer> indexList = pokerIndex.get(startLevel);
+                        if(indexList.size() < 3) {
+                            break;
+                        }
+                        Poker poker1 = pokers.get(indexList.get(0));
+                        Poker poker2 = pokers.get(indexList.get(1));
+                        Poker poker3 = pokers.get(indexList.get(2));
+                        futurePokers.add(poker1);
+                        futurePokers.add(poker2);
+                        futurePokers.add(poker3);
+                        positions.addAll(Arrays.asList(indexList.get(0), indexList.get(1), indexList.get(2)));
+                    }
+                    if(futurePokers.size() < sc * 3) {
+                        continue;
+                    }
+                    PokerSell4P futureSell = PokerHelper4P.checkPokerType(futurePokers);
+                    if(pokerSell4P.getSellType4P() == futureSell.getSellType4P() && futureSell.getScore() > pokerSell4P.getScore()) {
+                        futureSell.setPositions(positions);
+                        res.add(futureSell);
+                    }
+                }
+                break;
+            case THREE_STRAIGHT_WITH_DOUBLE:
+                boolean hasTriple = pokerIndex.values().stream().filter(e -> e.size() >= 3).count() >= pokerSell4P.getStraightCount();
+                boolean hasDouble = pokerIndex.values().stream().filter(e -> e.size() >= 2).count() >= pokerSell4P.getStraightCount();
+                if(hasTriple && hasDouble) {
+                    List<Integer> three = pokerIndex.entrySet().stream().filter(e -> e.getValue().size() >= 3).map(Map.Entry::getKey).toList();
+                    List<Integer> two = pokerIndex.entrySet().stream().filter(e -> e.getValue().size() >= 3).map(Map.Entry::getKey).toList();
+                    int sCount = pokerSell4P.getStraightCount();
+                    //获取翅膀的所有组合
+                    List<Set<Integer>> combinations = new ArrayList<>(Sets.combinations(new HashSet<>(two), 2));
+
+                    //飞机需要连续
+                    for(int th = 0; th < three.size() - sCount + 1; th ++) {
+                        List<Poker> futurePokers = new ArrayList<>();
+                        List<Integer> positions = new ArrayList<>();
+                        for (int startLevel = th; startLevel < th + sCount; startLevel++) {
+                            List<Integer> indexList = pokerIndex.get(startLevel);
+                            Poker poker1 = pokers.get(indexList.get(0));
+                            Poker poker2 = pokers.get(indexList.get(1));
+                            Poker poker3 = pokers.get(indexList.get(2));
+                            futurePokers.add(poker1);
+                            futurePokers.add(poker2);
+                            futurePokers.add(poker3);
+                            positions.addAll(Arrays.asList(indexList.get(0), indexList.get(1), indexList.get(2)));
+                        }
+                        for(Set<Integer> combination : combinations) {
+                            List<Poker> dd = combination.stream().map(pokerIndex::get).flatMap(Collection::stream).map(pokers::get).collect(Collectors.toList());
+                            futurePokers.addAll(dd);
+                            positions.addAll(combination);
+                        }
+                        PokerSell4P futureSell = PokerHelper4P.checkPokerType(futurePokers);
+                        if(pokerSell4P.getSellType4P() == futureSell.getSellType4P() && futureSell.getScore() > pokerSell4P.getScore()) {
+                            futureSell.addPositions(positions);
+                            res.add(futureSell);
+                        }
+                    }
+                }
+                break;
+            case BOMB_FOUR:
+            case BOMB_FIVE:
+            case BOMB_SIX:
+            case BOMB_SEVEN:
+            case BOMB_EIGHT:
+                for(List<Integer> indexList : pokerIndex.values()){
+                    if(indexList.size() >= 4) {
+                        List<Poker> futureSell = new ArrayList<>();
+                        for(int i : indexList) {
+                            futureSell.add(pokers.get(i));
+                        }
+                        PokerSell4P type = PokerHelper4P.checkPokerType(futureSell);
+                        if(type.getScore() > pokerSell4P.getScore()) {
+                            type.setPositions(indexList);
+                            res.add(type);
+                        }
+                    }
+                }
+//            case KING_BOMB: 王炸就是要不起
+            default:
+                break;
+        }
+        return res;
+    }
+
+    public static List<PokerSell4P> findAllBombPokers(List<Poker> pokers) {
+        List<PokerSell4P> res = new ArrayList<>();
+
+        Map<Integer, List<Integer>> pokerIndex = new HashMap<>();
+        for(int i = 0; i < pokers.size(); i++){
+            Poker p = pokers.get(i);
+            List<Integer> indexList = pokerIndex.getOrDefault(p.getLevel().getLevel(), new ArrayList<>());
+            indexList.add(i);
+            pokerIndex.put(p.getLevel().getLevel(), indexList);
+        }
+
+        for(List<Integer> indexList : pokerIndex.values()){
+            if(indexList.size() >= 4) {
+                List<Poker> futureSell = new ArrayList<>();
+                for(int i : indexList) {
+                    futureSell.add(pokers.get(i));
+                }
+                PokerSell4P type = PokerHelper4P.checkPokerType(futureSell);
+                type.setPositions(indexList);
+                res.add(type);
+            }
+        }
+        return res;
     }
 }

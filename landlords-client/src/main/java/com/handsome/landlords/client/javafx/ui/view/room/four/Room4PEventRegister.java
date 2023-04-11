@@ -30,6 +30,7 @@ public class Room4PEventRegister implements EventRegister {
         submitPokers();
         passRound();
         back2Lobby();
+        hint();
     }
 
     private void robLandlord() {
@@ -65,6 +66,12 @@ public class Room4PEventRegister implements EventRegister {
     private void passRound() {
         uiController.$("passButton", Button.class).setOnAction(e -> {
             room4PEvent.passRound();
+        });
+    }
+
+    private void hint(){
+        uiController.$("hintButton", Button.class).setOnAction(e -> {
+            room4PEvent.hint();
         });
     }
 

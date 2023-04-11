@@ -1,7 +1,9 @@
 package com.handsome.landlords.client.javafx.entity;
 
 import com.handsome.landlords.entity.Poker;
+import com.handsome.landlords.entity.PokerSell4P;
 import com.handsome.landlords.enums.ClientType;
+import com.handsome.landlords.robot.TrusteeBot;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,13 +18,21 @@ public class User {
     // null, ClientType.LANDLORD, ClientType.PEASANT
     private ClientType role;
 
+    //托管机器人
+    private TrusteeBot trusteeBot;
+
     public User(String nickname) {
         this.nickname = nickname;
+        this.trusteeBot = new TrusteeBot();
     }
 
     public void joinRoom(int roomId) {
         currentRoomId = roomId;
         playing = true;
+    }
+
+    public PokerSell4P hint(List<Poker> lastSell){
+        return trusteeBot.hint(this.pokers, lastSell);
     }
 
     public void exitRoom() {
@@ -37,6 +47,11 @@ public class User {
 
     public void clearPokers() {
         pokers.clear();
+        hintClear();
+    }
+
+    public void hintClear(){
+        trusteeBot.clear();
     }
 
     public void addPokers(List<Poker> pokers) {

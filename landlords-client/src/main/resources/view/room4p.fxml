@@ -143,9 +143,11 @@
                 <!-- 不抢地主按钮 -->
                 <Button fx:id="notRobButton" layoutX="655" layoutY="140" visible="false"/>
                 <!-- 出牌按钮 -->
-                <Button fx:id="submitButton" layoutX="555" layoutY="140" visible="false">出牌</Button>
+                <Button fx:id="submitButton" layoutX="500" layoutY="140" visible="false">出牌</Button>
                 <!-- 不出牌按钮 -->
-                <Button fx:id="passButton" layoutX="655" layoutY="140" visible="false">不出</Button>
+                <Button fx:id="passButton" layoutX="600" layoutY="140" visible="false">不出</Button>
+                <!-- 提示按钮 -->
+                <Button fx:id="hintButton" layoutX="700" layoutY="140" visible="false">提示</Button>
 
                 <Pane fx:id="playerShowPane" layoutX="200">
                     <!-- 倒计时显示框 -->

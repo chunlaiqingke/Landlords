@@ -2,6 +2,7 @@ package com.handsome.landlords.client.javafx.ui.view.room;
 
 
 import com.handsome.landlords.entity.Poker;
+import com.handsome.landlords.entity.PokerSell4P;
 import com.handsome.landlords.enums.ClientType;
 import com.handsome.landlords.client.javafx.ui.view.Method;
 
@@ -43,4 +44,8 @@ public interface RoomMethod extends Method {
     void showPokerPlayButtons();
 
     void hidePokerPlayButtons();
+
+    void checkPokers(List<Poker> pokers, PokerSell4P hintPokerSell);
+
+    void clearCheckedPokers(List<Poker> pokers);
 }

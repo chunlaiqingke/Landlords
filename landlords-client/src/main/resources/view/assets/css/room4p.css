@@ -65,7 +65,8 @@
 #robButton,
 #notRobButton,
 #submitButton,
-#passButton {
+#passButton,
+#hintButton {
     -fx-alignment: center;
     -fx-pref-width: 60;
     -fx-pref-height: 30;

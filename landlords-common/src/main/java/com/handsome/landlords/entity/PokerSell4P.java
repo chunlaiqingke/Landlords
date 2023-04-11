@@ -13,6 +13,11 @@ public class PokerSell4P {
     private List<Poker> sellPokers;
 
     /**
+     * 在当前手牌中的索引
+     */
+    private List<Integer> positions;
+
+    /**
      * 牌大小，比如三代二，三张牌的level决定了三代二的大小
      */
     private int coreLevel;
@@ -76,6 +81,22 @@ public class PokerSell4P {
 
     public void setStraightCount(int straightCount) {
         this.straightCount = straightCount;
+    }
+
+    public List<Integer> getPositions() {
+        return positions;
+    }
+
+    public void setPositions(List<Integer> positions) {
+        this.positions = positions;
+    }
+
+    public void addPositions(List<Integer> positions) {
+        if(this.positions == null) {
+            this.positions = positions;
+        } else {
+            this.positions.addAll(positions);
+        }
     }
 
     public static boolean matchSellType(PokerSell4P last, PokerSell4P current){

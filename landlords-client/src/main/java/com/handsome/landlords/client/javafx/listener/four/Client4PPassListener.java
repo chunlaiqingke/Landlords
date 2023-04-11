@@ -33,12 +33,14 @@ public class Client4PPassListener extends AbstractClientListener {
         // 更新当前玩家和出牌信息
         String clientNickname = jsonObject.getString("clientNickname");
         currentRoomInfo4P.setRecentPlayerName(clientNickname);
-        currentRoomInfo4P.setRecentPokers(Collections.emptyList());
+        //you玩家pass的时候，不可以讲recentPokers删掉，否则提示功能没法工作
+//        currentRoomInfo4P.setRecentPokers(Collections.emptyList());
 
         // 视图更新
         String nextClientNickname = jsonObject.getString("nextClientNickname");
         Platform.runLater(() -> {
             method.play(nextClientNickname);
+            method.clearCheckedPokers(currentRoomInfo4P.getPlayer().getPokers());
             method.showMessage(clientNickname, "不出");
         });
 

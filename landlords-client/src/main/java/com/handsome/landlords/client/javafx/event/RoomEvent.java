@@ -65,4 +65,9 @@ public class RoomEvent implements IRoomEvent {
     public void gameOverExit() {
         ClientListenerUtils.getListener(ClientEventCode.CODE_CLIENT_EXIT).handle(BeanUtil.getBean("channel"), null);
     }
+
+    @Override
+    public void hint() {
+        //todo
+    }
 }

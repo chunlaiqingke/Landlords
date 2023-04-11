@@ -64,4 +64,9 @@ public class Room4PEvent implements IRoomEvent,IRoom4PEvent {
     public void gameOverExit() {
         ClientListenerUtils.getListener(ClientEventCode.CODE_4P_CLIENT_EXIT).handle(BeanUtil.getBean("channel"), null);
     }
+
+    @Override
+    public void hint() {
+        ClientListenerUtils.getListener(ClientEventCode.CODE_4P_HINT_POKER_PLAY).handle(BeanUtil.getBean("channel"), null);
+    }
 }

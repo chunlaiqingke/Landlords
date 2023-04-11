@@ -16,4 +16,6 @@ public interface IRoomEvent {
     void exit();
 
     void gameOverExit();
+
+    void hint();
 }

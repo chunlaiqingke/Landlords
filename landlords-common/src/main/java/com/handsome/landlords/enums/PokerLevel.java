@@ -110,4 +110,8 @@ public enum PokerLevel {
 		}
 		return null;
 	}
+
+	public static final boolean isKing(PokerLevel level){
+		return level == LEVEL_SMALL_KING || level == LEVEL_BIG_KING;
+	}
 }
