@@ -52,7 +52,8 @@
 [参考连接](https://blog.csdn.net/weixin_44480167/article/details/121318205)  
 
 
-交流群：
-![image](https://user-images.githubusercontent.com/19192068/231476686-d13c50dc-65c6-4d62-97d9-7cb18617adcb.png)
+交流群：  
+<img width="274" alt="image" src="https://user-images.githubusercontent.com/19192068/231477324-1644b750-85d1-472c-8c0b-23fda8e3be4d.png">
+
 
 
