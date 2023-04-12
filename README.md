@@ -49,5 +49,10 @@
 
 #### native打包方式
 [packr](https://github.com/libgdx/packr)
-[参考连接](https://blog.csdn.net/weixin_44480167/article/details/121318205)
+[参考连接](https://blog.csdn.net/weixin_44480167/article/details/121318205)  
+
+
+交流群：
+![image](https://user-images.githubusercontent.com/19192068/231476686-d13c50dc-65c6-4d62-97d9-7cb18617adcb.png)
+
 
