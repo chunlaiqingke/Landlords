@@ -99,7 +99,11 @@ public enum ClientEventCode implements Serializable {
 
 	CODE_GAME_WATCH_SUCCESSFUL("观战成功"),
 
-	CODE_4P_HINT_POKER_PLAY("提示出牌");
+	CODE_4P_HINT_POKER_PLAY("提示出牌"),
+
+	CODE_4P_HINT_AUTO_POKER_PLAY("自动出牌"),
+
+	CODE_4P_CHANGE_TRUSTEE("显示托管状态");
 
 	private String msg;
 

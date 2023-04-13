@@ -49,7 +49,9 @@ public enum ServerEventCode implements Serializable {
 
 	CODE_GAME_WATCH("观战"),
 
-	CODE_GAME_WATCH_EXIT("退出观战"), ;
+	CODE_GAME_WATCH_EXIT("退出观战"),
+
+	CODE_4P_CHANGE_TRUSTEE("显示托管状态");
 
 
 	private String msg;

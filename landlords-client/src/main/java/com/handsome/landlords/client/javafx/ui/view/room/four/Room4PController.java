@@ -1,14 +1,19 @@
 package com.handsome.landlords.client.javafx.ui.view.room.four;
 
+import com.handsome.landlords.channel.ChannelUtils;
 import com.handsome.landlords.client.javafx.entity.CurrentRoomInfo4P;
 import com.handsome.landlords.client.javafx.entity.User;
 import com.handsome.landlords.client.javafx.event.Room4PEvent;
+import com.handsome.landlords.client.javafx.listener.ClientListenerUtils;
 import com.handsome.landlords.client.javafx.ui.view.room.ShowPokerPane;
 import com.handsome.landlords.client.javafx.ui.view.room.operator.PlayerPaneOperator;
 import com.handsome.landlords.client.javafx.ui.view.util.CountDownTask;
 import com.handsome.landlords.client.javafx.util.BeanUtil;
 import com.handsome.landlords.entity.PokerSell4P;
+import com.handsome.landlords.enums.ClientEventCode;
+import com.handsome.landlords.enums.ServerEventCode;
 import com.handsome.landlords.helper.PokerHelper4P;
+import io.netty.channel.Channel;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -98,6 +103,11 @@ public class Room4PController extends UIObject implements Room4PMethod {
         Button notRobButton = $("notRobButton", Button.class);
         notRobButton.setText("不抢");
         notRobButton.setVisible(false);
+
+        $("playerTrustee", Button.class).setVisible(false);
+        $("midPlayerTrustee", Button.class).setVisible(false);
+        $("prevPlayerTrustee", Button.class).setVisible(false);
+        $("nextPlayerTrustee", Button.class).setVisible(false);
 
         $("prevPlayerPane", Pane.class).lookup(".tips").setVisible(false);
         $("midPlayerPane", Pane.class).lookup(".tips").setVisible(false);
@@ -193,7 +203,7 @@ public class Room4PController extends UIObject implements Room4PMethod {
         List<Integer> where = PokerHelper4P.whereBomb(pokers);
         for (int i = 0; i < size; i++) {
             boolean isBomb = where.contains(i);
-            pokersPane.getChildren().add(new PokerPane4P(i, firstPokerPaneOffsetX, pokers.get(i), isBomb).getPane());
+            pokersPane.getChildren().add(new PokerPane4P(i, firstPokerPaneOffsetX, pokers.get(i), isBomb));
         }
     }
 
@@ -300,6 +310,11 @@ public class Room4PController extends UIObject implements Room4PMethod {
         $("hintButton", Button.class).setVisible(false);
     }
 
+    /**
+     * 选牌
+     * @param pokers
+     * @param hintPokerSell
+     */
     @Override
     public void checkPokers(List<Poker> pokers, PokerSell4P hintPokerSell) {
         //先清除之前选中的牌
@@ -309,15 +324,31 @@ public class Room4PController extends UIObject implements Room4PMethod {
         ObservableList<Node> children = pokersPane.getChildren();
         for(int p : positions) {
             //手动触发点击事件
-            children.get(p).fireEvent(new MouseEvent(
-                    MouseEvent.MOUSE_CLICKED,
-                    1, 1, 1, 1,
-                    MouseButton.PRIMARY,
-                    1,
-                    false, false, false, false,
-                    false, false, false,
-                    false, false, false, null));
+            Node node = children.get(p);
+            if(node instanceof PokerPane4P) {
+                ((PokerPane4P)node).triggerCheck();
+            }
         }
+    }
+
+    @Override
+    public void hintSubmit(String playerName){
+        getPlayerPaneOperatorByPlayerName(playerName).hintSubmit();
+    }
+
+    @Override
+    public void hintPass(String playerName) {
+        getPlayerPaneOperatorByPlayerName(playerName).hintPass();
+    }
+
+    @Override
+    public void showTrustee(String playerName){
+        getPlayerPaneOperatorByPlayerName(playerName).showTrustee();
+    }
+
+    @Override
+    public void hideTrustee(String playerName) {
+        getPlayerPaneOperatorByPlayerName(playerName).hideTrustee();
     }
 
     public void clearCheckedPokers(List<Poker> pokers){
@@ -348,6 +379,7 @@ public class Room4PController extends UIObject implements Room4PMethod {
         protected Pane playerShowPane;
         protected Label timer;
         protected Label tips;
+        protected Button playerTrustee;
         protected Pane playerShowPokersPane;
 
         protected Pane playerPokersPane;
@@ -384,7 +416,14 @@ public class Room4PController extends UIObject implements Room4PMethod {
 
             if (future == null || future.isDone()) {
                 CountDownTask task = new CountDownTask(timer, 60,
-                        node -> Platform.runLater(() -> hidePokerPlayButtons()),
+                        node -> Platform.runLater(() -> {
+                            hidePokerPlayButtons();
+                            User user = BeanUtil.getBean("user");
+                            user.setTrusted();
+                            Channel channel = BeanUtil.getBean("channel");
+                            ClientListenerUtils.getListener(ClientEventCode.CODE_4P_HINT_AUTO_POKER_PLAY).handle(channel, null);
+                            ChannelUtils.pushToServer(channel, ServerEventCode.CODE_4P_CHANGE_TRUSTEE, "True");
+                        }),
                         surplusTime -> Platform.runLater(() -> timer.setText(surplusTime.toString())));
 
                 future = task.start();
@@ -422,6 +461,26 @@ public class Room4PController extends UIObject implements Room4PMethod {
             tips.setVisible(false);
         }
 
+        @Override
+        public void hintSubmit() {
+
+        }
+
+        @Override
+        public void hintPass() {
+
+        }
+
+        @Override
+        public void showTrustee() {
+            playerTrustee.setVisible(true);
+        }
+
+        @Override
+        public void hideTrustee() {
+            playerTrustee.setVisible(false);
+        }
+
         protected abstract void renderPokers(List<Poker> pokers);
         protected abstract void refreshPlayerPokers(List<Poker> pokers);
     }
@@ -435,6 +494,8 @@ public class Room4PController extends UIObject implements Room4PMethod {
             this.playerShowPokersPane = (Pane) playerShowPane.lookup("#prevPlayerShowPokersPane");
 
             this.playerPokersPane = $("prevPlayerPokersPane", Pane.class);
+
+            this.playerTrustee = $("prevPlayerTrustee", Button.class);
         }
 
         /**
@@ -470,6 +531,8 @@ public class Room4PController extends UIObject implements Room4PMethod {
             this.playerShowPokersPane = (Pane) playerShowPane.lookup("#nextPlayerShowPokersPane");
 
             this.playerPokersPane = $("nextPlayerPokersPane", Pane.class);
+
+            this.playerTrustee = $("nextPlayerTrustee", Button.class);
         }
 
         @Override
@@ -512,6 +575,7 @@ public class Room4PController extends UIObject implements Room4PMethod {
             this.playerShowPokersPane = (Pane) playerShowPane.lookup("#midPlayerShowPokersPane");
 
             this.playerPokersPane = $("midPlayerPokersPane", Pane.class);
+            this.playerTrustee = $("midPlayerTrustee", Button.class);
         }
 
         @Override
@@ -544,6 +608,7 @@ public class Room4PController extends UIObject implements Room4PMethod {
             this.playerShowPokersPane = (Pane) playerShowPane.lookup("#playerShowPokersPane");
 
             this.playerPokersPane = $("pokersPane", Pane.class);
+            this.playerTrustee = $("playerTrustee", Button.class);
         }
 
         @Override
@@ -606,6 +671,14 @@ public class Room4PController extends UIObject implements Room4PMethod {
             User user = BeanUtil.getBean("user");
 
             refreshPlayPokers(user.getPokers());
+        }
+
+        public void hintSubmit(){
+            room4PEventRegister.triggerSubmit();
+        }
+
+        public void hintPass(){
+            room4PEventRegister.triggerPass();
         }
     }
 }

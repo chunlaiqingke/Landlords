@@ -92,6 +92,18 @@
     -fx-border-radius: 6;
 }
 
+#midPlayerTrustee,
+#prevPlayerTrustee,
+#nextPlayerTrustee,
+#playerTrustee {
+    -fx-alignment: center;
+    -fx-pref-width: 25;
+    -fx-pref-height: 25;
+    -fx-background-color: #ff9900;
+    -fx-text-fill: #6600ff;
+    -fx-border-color: #afadab;
+}
+
 #midPlayerNickname,
 #prevPlayerNickname,
 #nextPlayerNickname,

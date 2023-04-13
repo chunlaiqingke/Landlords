@@ -257,6 +257,26 @@ public class RoomController extends UIObject implements RoomMethod {
     }
 
     @Override
+    public void hintSubmit(String playerName) {
+
+    }
+
+    @Override
+    public void hintPass(String playerName) {
+
+    }
+
+    @Override
+    public void showTrustee(String playerName) {
+
+    }
+
+    @Override
+    public void hideTrustee(String playerName) {
+
+    }
+
+    @Override
     public boolean isShow() {
         return super.isShowing();
     }
@@ -323,6 +343,7 @@ public class RoomController extends UIObject implements RoomMethod {
         protected Pane playerShowPane;
         protected Label timer;
         protected Label tips;
+        protected Button playerTrustee;
         protected Pane playerShowPokersPane;
 
         protected Pane playerPokersPane;
@@ -399,6 +420,26 @@ public class RoomController extends UIObject implements RoomMethod {
 
         protected abstract void renderPokers(List<Poker> pokers);
         protected abstract void refreshPlayerPokers(List<Poker> pokers);
+
+        @Override
+        public void hintSubmit() {
+
+        }
+
+        @Override
+        public void hintPass() {
+
+        }
+
+        @Override
+        public void showTrustee() {
+
+        }
+
+        @Override
+        public void hideTrustee() {
+
+        }
     }
 
     private class PrevPlayerPaneOperator extends AbstractPlayerPaneOperator {

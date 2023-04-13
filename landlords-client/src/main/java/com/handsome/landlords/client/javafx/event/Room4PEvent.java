@@ -69,4 +69,16 @@ public class Room4PEvent implements IRoomEvent,IRoom4PEvent {
     public void hint() {
         ClientListenerUtils.getListener(ClientEventCode.CODE_4P_HINT_POKER_PLAY).handle(BeanUtil.getBean("channel"), null);
     }
+
+    @Override
+    public void showTrustee() {
+        Channel channel = BeanUtil.getBean("channel");
+        ChannelUtils.pushToServer(channel, ServerEventCode.CODE_4P_CHANGE_TRUSTEE, "True");
+    }
+
+    @Override
+    public void hideTrustee() {
+        Channel channel = BeanUtil.getBean("channel");
+        ChannelUtils.pushToServer(channel, ServerEventCode.CODE_4P_CHANGE_TRUSTEE, "False");
+    }
 }

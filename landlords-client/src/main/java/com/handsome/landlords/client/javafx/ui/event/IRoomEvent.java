@@ -18,4 +18,8 @@ public interface IRoomEvent {
     void gameOverExit();
 
     void hint();
+
+    void showTrustee();
+
+    void hideTrustee();
 }

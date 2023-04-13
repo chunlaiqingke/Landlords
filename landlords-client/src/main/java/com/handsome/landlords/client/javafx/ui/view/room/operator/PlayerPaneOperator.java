@@ -17,4 +17,12 @@ public interface PlayerPaneOperator {
     void play();
 
     void clear();
+
+    void hintSubmit();
+
+    void hintPass();
+
+    void showTrustee();
+
+    void hideTrustee();
 }

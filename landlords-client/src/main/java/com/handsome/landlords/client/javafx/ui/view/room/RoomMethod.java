@@ -48,4 +48,12 @@ public interface RoomMethod extends Method {
     void checkPokers(List<Poker> pokers, PokerSell4P hintPokerSell);
 
     void clearCheckedPokers(List<Poker> pokers);
+
+    void hintSubmit(String playerName);
+
+    void hintPass(String playerName);
+
+    void showTrustee(String playerName);
+
+    void hideTrustee(String playerName);
 }

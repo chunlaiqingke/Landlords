@@ -32,6 +32,7 @@
         <Pane layoutX="0" layoutY="100" styleClass="up">
             <!-- 对面玩家 -->
             <Pane fx:id="midPlayerPane" layoutX="290" layoutY="0">
+                <Button fx:id="midPlayerTrustee" layoutX="240" layoutY="60" visible="false">管</Button>
                 <!-- 对面玩家角色 -->
                 <Label fx:id="midPlayerRole" layoutX="230" layoutY="110"/>
 
@@ -50,7 +51,7 @@
                     </clip>
                 </ImageView>
 
-                <Pane fx:id="midPlayerPokersPane" layoutX="230" layoutY="20" styleClass="rearPoker" visible="false">
+                <Pane fx:id="midPlayerPokersPane" layoutX="170" layoutY="20" styleClass="rearPoker" visible="false">
                     <Label layoutX="15" layoutY="18" styleClass="pokerCount">0</Label>
                 </Pane>
 
@@ -69,8 +70,9 @@
         <Pane layoutX="0" layoutY="250" styleClass="middle">
             <!-- 上游玩家-->
             <Pane fx:id="prevPlayerPane">
+                <Button fx:id="prevPlayerTrustee" layoutX="10" layoutY="60" visible="false">管</Button>
                 <!-- 上游玩家角色 -->
-                <Label fx:id="prevPlayerRole" layoutY="110"/>
+                <Label fx:id="prevPlayerRole" layoutX="0" layoutY="110"/>
                 <!-- 上游玩家昵称 -->
                 <Label fx:id="prevPlayerNickname" layoutX="60" layoutY="110"/>
                 <!-- 上游玩家头像 -->
@@ -101,6 +103,7 @@
 
             <!-- 下游玩家pane -->
             <Pane fx:id="nextPlayerPane" layoutX="600" layoutY="0">
+                <Button fx:id="nextPlayerTrustee" layoutX="440" layoutY="60" visible="false">管</Button>
                 <!-- 下游玩家角色 -->
                 <Label fx:id="nextPlayerRole" layoutX="430" layoutY="110" />
 
@@ -159,6 +162,7 @@
                 </Pane>
 
                 <!-- 当前玩家角色 -->
+                <Button fx:id="playerTrustee" layoutX="25" layoutY="265" visible="false">管</Button>
                 <Label fx:id="playerRole" layoutX="25" layoutY="315"/>
                 <Label fx:id="playerNickname" layoutX="75" layoutY="315"/>
 

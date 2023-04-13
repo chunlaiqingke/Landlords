@@ -21,6 +21,9 @@ public class User {
     //托管机器人
     private TrusteeBot trusteeBot;
 
+    //是否被托管
+    private boolean trusted;
+
     public User(String nickname) {
         this.nickname = nickname;
         this.trusteeBot = new TrusteeBot();
@@ -90,5 +93,21 @@ public class User {
 
     public String getNickname() {
         return nickname;
+    }
+
+    public boolean isTrusted() {
+        return trusted;
+    }
+
+    public void setTrusted() {
+        if(!isTrusted()) {
+            trusted = true;
+        }
+    }
+
+    public void cancelTrusted(){
+        if(isTrusted()) {
+            trusted = false;
+        }
     }
 }

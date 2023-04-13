@@ -12,7 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
-public class PokerPane4P {
+public class PokerPane4P extends Pane {
 
     public static final int MARGIN_LEFT = 30;
 
@@ -20,8 +20,6 @@ public class PokerPane4P {
     // start at 0
     private int index;
     private int offsetX;
-
-    private Pane pane;
 
     public PokerPane4P(int index, int offsetX, Poker poker) {
         this(index, offsetX, poker, false);
@@ -39,29 +37,32 @@ public class PokerPane4P {
             createNormalPokerPane(isBomb);
         }
 
-        pane.setOnMouseClicked(e -> {
-            double y = pane.getLayoutY();
-            boolean alreadyChecked = y == 5;
-            CurrentRoomInfo4P currentRoomInfo4P = BeanUtil.getBean("currentRoomInfo4P");
-
-            // 取消选中
-            if (alreadyChecked) {
-                pane.setLayoutY(y + 15);
-                currentRoomInfo4P.removeUncheckedPoker(poker);
-            }
-            // 选中
-            else {
-                pane.setLayoutY(y - 15);
-                currentRoomInfo4P.addCheckedPoker(poker);
-            }
+        this.setOnMouseClicked(e -> {
+            triggerCheck();
         });
     }
 
+    public void triggerCheck(){
+        double y = this.getLayoutY();
+        boolean alreadyChecked = y == 5;
+        CurrentRoomInfo4P currentRoomInfo4P = BeanUtil.getBean("currentRoomInfo4P");
+
+        // 取消选中
+        if (alreadyChecked) {
+            this.setLayoutY(y + 15);
+            currentRoomInfo4P.removeUncheckedPoker(poker);
+        }
+        // 选中
+        else {
+            this.setLayoutY(y - 15);
+            currentRoomInfo4P.addCheckedPoker(poker);
+        }
+    }
+
     private void createNormalPokerPane(boolean isBomb) {
-        pane = new Pane();
-        pane.getStyleClass().add("horizontal-poker");
-        pane.setLayoutX(index * MARGIN_LEFT + offsetX);
-        pane.setLayoutY(20);
+        this.getStyleClass().add("horizontal-poker");
+        this.setLayoutX(index * MARGIN_LEFT + offsetX);
+        this.setLayoutY(20);
 
         Text level = new Text();
         level.getStyleClass().add("level");
@@ -99,7 +100,7 @@ public class PokerPane4P {
             typeBig.setFill(Paint.valueOf("#9c2023"));
         }
 
-        ObservableList<Node> children = pane.getChildren();
+        ObservableList<Node> children = this.getChildren();
         children.add(level);
         children.add(typeSmall);
         children.add(typeBig);
@@ -109,10 +110,9 @@ public class PokerPane4P {
     }
 
     private void createJokerPokerPane(boolean isBomb) {
-        pane = new Pane();
-        pane.getStyleClass().add("horizontal-poker");
-        pane.setLayoutX(index * MARGIN_LEFT + offsetX);
-        pane.setLayoutY(20);
+        this.getStyleClass().add("horizontal-poker");
+        this.setLayoutX(index * MARGIN_LEFT + offsetX);
+        this.setLayoutY(20);
 
         Text text1 = new Text();
         text1.getStyleClass().add("joker-level");
@@ -173,7 +173,7 @@ public class PokerPane4P {
             text5.setFill(Paint.valueOf("#9c2023"));
         }
 
-        ObservableList<Node> children = pane.getChildren();
+        ObservableList<Node> children = this.getChildren();
         children.add(text1);
         children.add(text2);
         children.add(text3);
@@ -182,9 +182,5 @@ public class PokerPane4P {
         if(isBomb) {
             children.add(bomb);
         }
-    }
-
-    public Pane getPane() {
-        return pane;
     }
 }

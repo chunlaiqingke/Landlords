@@ -70,4 +70,14 @@ public class RoomEvent implements IRoomEvent {
     public void hint() {
         //todo
     }
+
+    @Override
+    public void showTrustee() {
+        //todo
+    }
+
+    @Override
+    public void hideTrustee() {
+        //todo
+    }
 }
