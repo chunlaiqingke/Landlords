@@ -310,6 +310,10 @@ public class Room4PController extends UIObject implements Room4PMethod {
         $("hintButton", Button.class).setVisible(false);
     }
 
+    public void autoTrustee() {
+        room4PEventRegister.autoTrustee();
+    }
+
     /**
      * 选牌
      * @param pokers
@@ -418,11 +422,7 @@ public class Room4PController extends UIObject implements Room4PMethod {
                 CountDownTask task = new CountDownTask(timer, 60,
                         node -> Platform.runLater(() -> {
                             hidePokerPlayButtons();
-                            User user = BeanUtil.getBean("user");
-                            user.setTrusted();
-                            Channel channel = BeanUtil.getBean("channel");
-                            ClientListenerUtils.getListener(ClientEventCode.CODE_4P_HINT_AUTO_POKER_PLAY).handle(channel, null);
-                            ChannelUtils.pushToServer(channel, ServerEventCode.CODE_4P_CHANGE_TRUSTEE, "True");
+                            autoTrustee();
                         }),
                         surplusTime -> Platform.runLater(() -> timer.setText(surplusTime.toString())));
 
@@ -673,10 +673,12 @@ public class Room4PController extends UIObject implements Room4PMethod {
             refreshPlayPokers(user.getPokers());
         }
 
+        @Override
         public void hintSubmit(){
             room4PEventRegister.triggerSubmit();
         }
 
+        @Override
         public void hintPass(){
             room4PEventRegister.triggerPass();
         }

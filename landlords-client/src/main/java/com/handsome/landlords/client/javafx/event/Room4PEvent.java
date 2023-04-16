@@ -81,4 +81,11 @@ public class Room4PEvent implements IRoomEvent,IRoom4PEvent {
         Channel channel = BeanUtil.getBean("channel");
         ChannelUtils.pushToServer(channel, ServerEventCode.CODE_4P_CHANGE_TRUSTEE, "False");
     }
+
+    @Override
+    public void autoTrustee() {
+        Channel channel = BeanUtil.getBean("channel");
+        ClientListenerUtils.getListener(ClientEventCode.CODE_4P_HINT_AUTO_POKER_PLAY).handle(channel, null);
+        ChannelUtils.pushToServer(channel, ServerEventCode.CODE_4P_CHANGE_TRUSTEE, "True");
+    }
 }

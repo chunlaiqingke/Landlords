@@ -56,4 +56,6 @@ public interface RoomMethod extends Method {
     void showTrustee(String playerName);
 
     void hideTrustee(String playerName);
+
+    void autoTrustee();
 }

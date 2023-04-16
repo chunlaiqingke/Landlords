@@ -1,13 +1,18 @@
 package com.handsome.landlords.client.javafx.ui.view.room.four;
 
+import com.handsome.landlords.channel.ChannelUtils;
 import com.handsome.landlords.client.javafx.entity.CurrentRoomInfo;
 import com.handsome.landlords.client.javafx.entity.CurrentRoomInfo4P;
 import com.handsome.landlords.client.javafx.entity.User;
 import com.handsome.landlords.client.javafx.event.Room4PEvent;
+import com.handsome.landlords.client.javafx.listener.ClientListenerUtils;
 import com.handsome.landlords.client.javafx.ui.view.EventRegister;
 import com.handsome.landlords.client.javafx.ui.view.room.four.Room4PController;
 import com.handsome.landlords.client.javafx.util.BeanUtil;
 import com.handsome.landlords.entity.Poker;
+import com.handsome.landlords.enums.ClientEventCode;
+import com.handsome.landlords.enums.ServerEventCode;
+import io.netty.channel.Channel;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
@@ -106,5 +111,14 @@ public class Room4PEventRegister implements EventRegister {
         User user = BeanUtil.getBean("user");
         user.hintClear();
         room4PEvent.passRound();
+    }
+
+    /**
+     * 自动进入托管
+     */
+    public void autoTrustee() {
+        User user = BeanUtil.getBean("user");
+        user.setTrusted();
+        room4PEvent.autoTrustee();
     }
 }
