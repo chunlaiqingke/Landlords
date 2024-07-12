@@ -277,6 +277,11 @@ public class RoomController extends UIObject implements RoomMethod {
     }
 
     @Override
+    public void autoTrustee() {
+
+    }
+
+    @Override
     public boolean isShow() {
         return super.isShowing();
     }
